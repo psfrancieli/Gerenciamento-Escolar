@@ -12,6 +12,7 @@ from App.view.registerEmployeeUI import RegisterEmployeeUI
 from App.controller.studentController import StudentController
 from App.view.studentCardUI import StudentCardUI
 from App.controller.userController import getCurrentUser
+from App.view.transferRoomUI import transferRoomUI
 
 class HomeUI(QMainWindow):
 
@@ -66,7 +67,7 @@ class HomeUI(QMainWindow):
         action = [
             ("Nova turma", lambda : self.callEvent(RegisterClassUI, parent=self)),
             ("Cadastrar aluno", lambda : self.callEvent(RegisterStudentUI, parent=self)),
-            ("Novo ano letivo", lambda : self.callEvent(RegisterStudentUI, parent=self)), # mudar para transferenciaUI
+            ("Novo ano letivo", lambda : self.callEvent(transferRoomUI, parent=self)), # mudar para transferenciaUI
             ("Relatórios", lambda : self.callEvent(RegisterStudentUI, parent=self)), # mudar para relatoriosUI
             ("Cadastrar funcionário", lambda : self.callEvent(adminUI, parent=self)),
         ]

@@ -97,7 +97,6 @@ if __name__ == "__main__":
     # }
     # ParentController.create(testParent)
 
-    # a= ParentController.findParentForStudent(10)
-    par = ParentController.findParentId(3)
+    a= ParentController.findParentForStudent(5)
 
-    print(par.name)
+    print(a)

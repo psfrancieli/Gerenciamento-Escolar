@@ -13,6 +13,7 @@ class StudentInfoUI(QDialog):
         self.show()
     
         self.btnOcorrencias.clicked.connect(self.openOcorrencias)
+        
 
 
     def getInfo(self):
@@ -39,14 +40,24 @@ class StudentInfoUI(QDialog):
             self.btnEdit.setStyleSheet("background-color: #4CAF50")
             self.nomeSocial.setEnabled(True)
             self.obs.setEnabled(True)
+            
+            print(self.student.id)
+            
 
         else:
             self.btnEdit.setText("Editar")
             self.btnEdit.setStyleSheet("")
             self.nomeSocial.setEnabled(False)
             self.obs.setEnabled(False)
-
-        # StudentController.update(self.student.id, self.student)
+            
+        nomeSocial =  self.nomeSocial.text()
+        obs = self.obs.toPlainText()
+        
+        self.student.nome_social = nomeSocial
+        self.student.obs = obs
+        
+        StudentController.update(self.student)
+        print(self.student.obs, self.student.nome_social)
 
     
 

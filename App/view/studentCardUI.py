@@ -4,19 +4,22 @@ from PyQt5.uic import loadUi
 from App.view.newReportUI import NewReportUI
 from App.view.parentInfoUI import ParentInfoUI
 from App.view.studentInfoUI import StudentInfoUI
+from App.controller.userController import getCurrentUser
 
 class StudentCardUI(QWidget):
     def __init__(self, student, **kwargs):
         super().__init__(**kwargs)
         loadUi("App/view/ui/studentCard.ui", self)
+        
 
         self.student = student
         self.person = self.student.nome_social or self.student.nome
         self.studentName.setText(self.person)
         
-        self.studentName.clicked.connect(self.openScreen)
+        if getCurrentUser()['tipo'] != 'agente':
+            self.studentName.clicked.connect(self.openScreen)
+            self.parentInfo.clicked.connect(self.openScreen)
         self.newReport.clicked.connect(self.openScreen)
-        self.parentInfo.clicked.connect(self.openScreen)
 
         
     def openScreen(self):

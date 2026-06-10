@@ -1,7 +1,6 @@
 from App.model.studentModel import Student
 from datetime import datetime
 class StudentController:
- 
     @classmethod
     def validateRequiredFields(cls, data):
  
@@ -41,22 +40,22 @@ class StudentController:
             return False
  
     @classmethod
-    def update(cls, id: int, data: dict):
+    def update(cls, student):
         try:
 
-            data_nasc=data.get("data_nasc")
-            data_nasc= datetime.strptime(data_nasc, "%d/%m/%Y")
-            student = Student(
-                id=id,
-                nome=data.get("nome"),
-                nome_social=data.get("nome_social"),
-                CPF=data.get("CPF"),
-                data_nasc=data_nasc,
-                RA=data.get("RA"),
-                RM=data.get("RM"),
-                obs=data.get("observacao"),
-                status=data.get("status", True)
-            )
+            # data_nasc=data.get("data_nasc")
+            # # data_nasc= datetime.strptime(data_nasc, "%d/%m/%Y")
+            # student = Student(
+            #     id=id,
+            #     nome=data.get("nome"),
+            #     nome_social=data.get("nome_social"),
+            #     CPF=data.get("CPF"),
+            #     data_nasc=data_nasc,
+            #     RA=data.get("RA"),
+            #     RM=data.get("RM"),
+            #     obs=data.get("observacao"),
+            #     status=data.get("status", True)
+            # )
  
             result = Student.Update(student)
             return result
@@ -144,6 +143,13 @@ class StudentController:
             return ("Preencha os dados necessários")
         for student in students:
             Student.linkStudentInClassroom(student.id , roomId)
+    
+    @classmethod
+    def deleteListStudent(cls , list:list[Student]):
+        if not list:
+            raise ValueError("A lista deve conter valores validos!")
+        for student in list:
+            cls.delete(student.id)
 
     @classmethod
     def searchStudent(cls, search):
@@ -155,6 +161,15 @@ class StudentController:
         except Exception as e:
             print(f"Erro ao buscar Aluno: ")
             raise e
+    
+    @classmethod
+    def AllStudentsWithoutClassroom(cls):
+        try:
+            return Student.AllStudentsWithoutClassroom()
+        except Exception as e:
+            print("Erro ao tentar buscar alunos {e}")
+            RuntimeError
+
 
         
 if __name__ == "__main__":
@@ -166,9 +181,23 @@ if __name__ == "__main__":
     # print(alunos[4].nome)
 
     # print('-'*50)
-    alunos_sala = StudentController.getByRoomID(3)
-    StudentController.deleteListStudent(alunos_sala[:3])
+    # alunos_sala = StudentController.getByRoomID(3)
+    # StudentController.deleteListStudent(alunos_sala[:3])
 
+    estudante = StudentController.AllStudentsWithoutClassroom()
+    for i in estudante:
+        print(f"""
+            ID : {i.id}
+            Nome : {i.nome}
+            Nome Social: {i.nome_social}
+            CPF: {i.CPF}
+            Data Nascimento: {i.data_nasc}
+            RA: {i.RA}
+            RM: {i.RM}
+            STATUS: {i.status}
+            Data Registro: {i.data_registro}
+            Observações: {i.obs}
+        """)
 
 
     # print('-'*50)

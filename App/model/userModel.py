@@ -128,8 +128,7 @@ class Usuario:
         except Exception as e:
             print(f"Não foi possivel fazer login! {e}")
             raise ValueError
-    
-    
+        
     def showInfo(self):
         print(f"""
             ID : {self.id}

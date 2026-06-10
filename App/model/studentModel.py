@@ -164,8 +164,8 @@ class Student:
         try:
             DB = Database()
             sql = """
-            SELECT a.id, a.nome, a.nome_social, a.CPF, a.data_nasc, a.RA, a.RM, a.Observacao, a.status, a.data_registro 
-            FROM alunos AS a JOIN sala_alunos AS sa ON a.id = sa.id_aluno 
+            SELECT a.id, a.nome, a.nome_social, a.CPF, a.data_nasc, a.RA, a.RM, a.Observacao, a.status, a.data_registro
+            FROM alunos AS a JOIN sala_alunos AS sa ON a.id = sa.id_aluno
             WHERE sa.id_sala = %s
             AND sa.id = (SELECT MAX(sa2.id) FROM sala_alunos sa2 WHERE sa2.id_aluno = a.id) AND a.status = 1;
             """
@@ -197,16 +197,29 @@ class Student:
             print(f'Erro ao buscar alunos {e}')
             raise RuntimeError
 
+    @classmethod
+    def AllStudentsWithoutClassroom(cls):
+        try:
+            DB = Database()
+            sql = "SELECT a.id , a.nome,a.nome_social, a.CPF , a.data_nasc , a.RA , a.RM ,a.Observacao , a.status, a.data_registro FROM alunos a LEFT JOIN sala_alunos sa ON a.id = sa.id_aluno WHERE sa.id_aluno IS NULL;"
+            result =  DB.fetchAll(sql)
+            return cls._getObjectList(result)
+        except Exception as e:
+            print(f'Erro ao tentar buscar alunos que não possuem sala {e}')
+            raise RuntimeError
         
 if __name__ == "__main__":
     # Student.Update(2)
 
-    listaEstudantes = Student.findByRoomID(10)
-    for i in listaEstudantes:
-        i.showInfo()
+    # listaEstudantes = Student.findByRoomID(10)
+    # for i in listaEstudantes:
+    #     i.showInfo()
     # print(s)
     # a = Student.searchStudent("Lucas Crispim")
     # print(a)
     # pass
+    estudanteSemClasse = Student.AllStudentsWithoutClassroom()
+    for i in estudanteSemClasse:
+        i.showInfo()
     
 
